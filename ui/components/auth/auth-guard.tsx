@@ -59,13 +59,12 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
 function LoadingStage() {
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-6 py-10">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,oklch(0.88_0.156_204.5_/_0.1),transparent_32%),linear-gradient(180deg,transparent,oklch(0.05_0.004_286_/_0.72))]" />
-      <div className="glass-strong relative flex w-full max-w-sm flex-col items-center gap-5 rounded-[2rem] px-8 py-10 text-center">
+    <div className="flex min-h-screen items-center justify-center bg-background px-6 py-10">
+      <div className="flex w-full max-w-sm flex-col items-center gap-5 rounded-2xl border border-border bg-card px-8 py-10 text-center">
         <Logo />
         <Spinner size="lg" />
         <div className="flex flex-col gap-2">
-          <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-primary">
+          <p className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-primary">
             syncing access state
           </p>
           <p className="text-sm leading-6 text-muted-foreground">

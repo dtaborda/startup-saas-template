@@ -43,6 +43,7 @@ interface ChatActions {
   setStatus: (status: ChatStatus) => void;
   setError: (error: string | null) => void;
   clearError: () => void;
+  reset: () => void;
 }
 
 type ChatStore = ChatState & ChatActions;
@@ -222,6 +223,17 @@ export const useChatStore = create<ChatStore>()(
         }),
 
       clearError: () => set({ error: null, status: CHAT_STATUS.IDLE }),
+
+      reset: () =>
+        set({
+          sessions: [],
+          activeSessionId: null,
+          messages: {},
+          status: CHAT_STATUS.IDLE,
+          streamingContent: "",
+          streamingSources: [],
+          error: null,
+        }),
     }),
     {
       name: "saas-chat-storage",

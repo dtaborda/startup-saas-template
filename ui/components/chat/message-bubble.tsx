@@ -47,7 +47,7 @@ export function MessageBubble({ message, userAvatar, userName }: MessageBubblePr
               </AvatarFallback>
             </Avatar>
           ) : (
-            <div className="flex size-10 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary shadow-[0_0_1.25rem_oklch(0.88_0.156_204.5_/_0.16)]">
+            <div className="flex size-10 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
               <Bot className="size-4" />
             </div>
           )}
@@ -55,17 +55,17 @@ export function MessageBubble({ message, userAvatar, userName }: MessageBubblePr
 
         <div
           className={cn(
-            "min-w-0 flex-1 rounded-[1.5rem] border px-4 py-4 md:px-5",
+            "min-w-0 flex-1 rounded-xl border px-4 py-4 md:px-5",
             isUser
-              ? "border-secondary/20 bg-[linear-gradient(135deg,oklch(0.673_0.246_14.4_/_0.18),oklch(0.255_0.03_241.5_/_0.9))] text-foreground shadow-[0_1rem_2rem_oklch(0.673_0.246_14.4_/_0.14)]"
-              : "glass-strong rounded-bl-[0.55rem] border-primary/14 bg-[linear-gradient(180deg,oklch(0.954_0.01_286.2_/_0.04),transparent_20%),oklch(0.2_0.012_286.8_/_0.82)] text-foreground",
+              ? "border-secondary/20 bg-secondary/10 text-foreground"
+              : "rounded-bl-sm border-primary/14 bg-card text-foreground",
           )}
         >
           <div className="flex flex-wrap items-center gap-2">
             <span
               className={cn(
-                "font-mono text-[0.66rem] font-semibold tracking-[0.2em] uppercase",
-                isUser ? "text-secondary-foreground/72" : "text-primary/88",
+                "font-mono text-[0.66rem] font-semibold tracking-[0.18em] uppercase",
+                isUser ? "text-secondary" : "text-primary",
               )}
             >
               {isUser ? "Operator" : "Growth AI"}
@@ -110,10 +110,10 @@ function FormattedContent({ content, isUser }: FormattedContentProps) {
           return (
             <div
               key={`${language}-${index}`}
-              className="overflow-hidden rounded-2xl border border-white/10 bg-background/70"
+              className="overflow-hidden rounded-xl border border-border/60 bg-background"
             >
-              <div className="flex items-center justify-between gap-4 border-b border-white/8 px-4 py-2">
-                <span className="font-mono text-[0.66rem] font-semibold tracking-[0.2em] text-primary uppercase">
+              <div className="flex items-center justify-between gap-4 border-b border-border/50 px-4 py-2">
+                <span className="font-mono text-[0.66rem] font-semibold tracking-[0.18em] text-primary uppercase">
                   {language}
                 </span>
                 <span className="font-mono text-[0.66rem] text-muted-foreground uppercase">
@@ -157,7 +157,7 @@ function renderInlineContent(content: string, isUser: boolean) {
             "rounded-md border px-1.5 py-0.5 font-mono text-[0.8rem]",
             isUser
               ? "border-white/12 bg-black/18 text-white"
-              : "border-primary/12 bg-background/58 text-primary",
+              : "border-primary/12 bg-background text-primary",
           )}
         >
           {part.slice(1, -1)}
@@ -188,12 +188,12 @@ function SourcesSection({ sources }: { sources: RagSource[] }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="mt-4 border-t border-white/8 pt-4">
+    <div className="mt-4 border-t border-border/50 pt-4">
       <Button
         variant="ghost"
         size="sm"
         onClick={() => setOpen(!open)}
-        className="h-auto gap-2 rounded-full border border-white/8 bg-background/24 px-3 py-1.5 font-mono text-[0.68rem] tracking-[0.18em] text-muted-foreground uppercase hover:bg-background/42 hover:text-foreground"
+        className="h-auto gap-2 rounded-full border border-border/60 bg-background px-3 py-1.5 font-mono text-[0.68rem] tracking-[0.18em] text-muted-foreground uppercase hover:text-foreground"
       >
         {open ? <ChevronUp data-icon="inline-start" /> : <ChevronDown data-icon="inline-start" />}
         {sources.length} source{sources.length === 1 ? "" : "s"}
@@ -204,7 +204,7 @@ function SourcesSection({ sources }: { sources: RagSource[] }) {
           {sources.map((source, index) => (
             <li
               key={`${source.title}-${index}`}
-              className="rounded-2xl border border-white/8 bg-background/40 px-4 py-3"
+              className="rounded-xl border border-border/60 bg-background px-4 py-3"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">

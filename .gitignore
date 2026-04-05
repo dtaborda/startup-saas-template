@@ -38,3 +38,6 @@ drizzle/
 
 # Supabase local state
 supabase/.branches/
+
+# Agent local registry
+.atl/

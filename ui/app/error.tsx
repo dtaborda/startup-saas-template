@@ -15,7 +15,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4 text-center">
-      <div className="glass max-w-md rounded-xl p-8">
+      <div className="max-w-md rounded-xl border border-border/60 bg-card p-8">
         <h1 className="mb-2 text-2xl font-bold text-foreground">Something went wrong</h1>
         <p className="mb-8 text-sm text-muted-foreground">
           An unexpected error occurred. Please try again or refresh the page.

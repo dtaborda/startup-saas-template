@@ -87,8 +87,8 @@ const Sidebar = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
         ref={ref}
         data-collapsed={collapsed}
         className={cn(
-          "group glass flex h-full flex-col gap-2 overflow-hidden transition-[width] duration-300",
-          collapsed ? "w-[var(--sidebar-width-collapsed)]" : "w-[var(--sidebar-width)]",
+          "group flex h-full w-full flex-col overflow-hidden transition-[width] duration-300",
+          collapsed && "!w-14",
           className,
         )}
         {...props}

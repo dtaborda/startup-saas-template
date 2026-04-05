@@ -126,6 +126,50 @@ ui/
 
 ---
 
+## Page Layout Convention (MANDATORY)
+
+Every `(app)` page MUST follow one of two layout modes:
+
+ALL `(app)` pages MUST use `<PageContainer>` from `@/components/layout`.
+
+```tsx
+// Content page (default) — dashboard, portfolio, profile
+import { PageContainer } from "@/components/layout";
+import { DashboardContent } from "@/components/dashboard";
+
+export default function DashboardPage() {
+  return (
+    <PageContainer>
+      <DashboardContent />
+    </PageContainer>
+  );
+}
+
+// Full-height page — chat, canvas, editor
+import { PageContainer } from "@/components/layout";
+import { ChatShell } from "@/components/chat/chat-shell";
+
+export default function ChatPage() {
+  return (
+    <PageContainer fullHeight>
+      <ChatShell />
+    </PageContainer>
+  );
+}
+```
+
+| Prop | Effect |
+|------|--------|
+| (default) | `mx-auto max-w-7xl gap-6 p-4 md:p-6` |
+| `fullHeight` | `h-full p-4 md:p-6` (no max-width, fills available space) |
+
+**Rules**:
+- `<main>` in AppShell has NO padding — `PageContainer` handles it.
+- Content components MUST NOT add their own `mx-auto`/`max-w`/padding wrappers.
+- NEVER create a page without `<PageContainer>`.
+
+---
+
 ## DECISION TREES
 
 ### Component Placement

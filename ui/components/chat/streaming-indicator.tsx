@@ -9,14 +9,14 @@ interface StreamingIndicatorProps {
 export function StreamingIndicator({ content }: StreamingIndicatorProps) {
   return (
     <output className="flex w-full justify-start" aria-label="Assistant is responding">
-      <div className="glass-strong flex w-full max-w-[92%] gap-3 rounded-[1.5rem] rounded-bl-[0.6rem] border border-primary/16 px-4 py-4 md:max-w-[82%]">
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
+      <div className="flex w-full max-w-[92%] gap-3 rounded-xl rounded-bl-sm border border-primary/16 bg-card px-4 py-4 md:max-w-[82%]">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
           <Bot className="size-4" />
         </div>
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-[0.66rem] font-semibold tracking-[0.2em] text-primary uppercase">
+            <span className="font-mono text-[0.66rem] font-semibold tracking-[0.18em] text-primary uppercase">
               Growth AI live
             </span>
             <span className="font-mono text-[0.66rem] text-muted-foreground uppercase">

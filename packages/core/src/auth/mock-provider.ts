@@ -11,7 +11,7 @@ const MOCK_USER: User = {
   updatedAt: "2025-01-01T00:00:00.000Z",
 };
 
-const MOCK_TOKEN = "mock-jwt-token-for-development";
+export const MOCK_TOKEN = "mock-jwt-token-for-development";
 
 export class MockAuthProvider implements AuthProvider {
   private session: AuthSession | null = null;

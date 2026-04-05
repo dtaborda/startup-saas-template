@@ -4,9 +4,9 @@ import { useUiStore } from "@template/core";
 import {
   Button,
   cn,
-  Separator,
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarHeader,
   SidebarItem,
@@ -14,77 +14,115 @@ import {
 } from "@template/ui";
 import {
   BriefcaseBusiness,
-  ChevronLeft,
-  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
   LayoutDashboard,
   MessageSquare,
   UserCircle,
+  X,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { LOGO_VARIANTS, Logo } from "../shared/logo";
 
-const NAV_ITEMS = [
-  { label: "Chat", href: "/chat", icon: MessageSquare },
-  { label: "Portfolio", href: "/portfolio", icon: BriefcaseBusiness },
+const MAIN_NAV = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Profile", href: "/profile", icon: UserCircle },
+  { label: "Portfolio", href: "/portfolio", icon: BriefcaseBusiness },
+  { label: "Chat", href: "/chat", icon: MessageSquare },
 ] as const;
 
-export function AppSidebar() {
+const FOOTER_NAV = { label: "Profile", href: "/profile", icon: UserCircle } as const;
+
+interface AppSidebarProps {
+  /** Called when the sidebar should close (mobile drawer mode). */
+  onClose?: () => void;
+}
+
+export function AppSidebar({ onClose }: AppSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { collapsed } = useSidebar();
   const setSidebarCollapsed = useUiStore((s) => s.setSidebarCollapsed);
 
+  const isMobile = Boolean(onClose);
+
   const handleToggle = () => {
-    setSidebarCollapsed(!collapsed);
+    if (isMobile) {
+      onClose?.();
+    } else {
+      setSidebarCollapsed(!collapsed);
+    }
+  };
+
+  const handleNavigate = (href: string) => {
+    router.push(href);
+    // Always close the drawer on mobile after navigating
+    onClose?.();
   };
 
   return (
-    <Sidebar className="border-r border-border/60 bg-background/75">
+    <Sidebar className="border-r border-border/60 bg-card">
       <SidebarHeader className="flex-row items-center justify-between gap-2 px-3 py-3">
         {!collapsed && (
-          <Logo variant={LOGO_VARIANTS.FULL} showEyebrow={false} className="min-w-0 flex-1" />
+          <span className="font-mono text-sm font-bold tracking-tight text-foreground">
+            <span className="text-primary">growth</span>
+            <span className="text-muted-foreground">-ai</span>
+          </span>
         )}
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 shrink-0 text-muted-foreground hover:text-foreground"
+          className="size-7 shrink-0 text-muted-foreground hover:text-foreground"
           onClick={handleToggle}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-label={isMobile ? "Close menu" : collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
-          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          {isMobile ? (
+            <X className="size-4" />
+          ) : collapsed ? (
+            <ChevronsRight className="size-4" />
+          ) : (
+            <ChevronsLeft className="size-4" />
+          )}
         </Button>
       </SidebarHeader>
 
-      <Separator className="opacity-50" />
-
-      <SidebarContent className="px-2 py-3">
+      <SidebarContent className="px-2 py-2">
         <SidebarGroup className="py-0">
-          <div className="flex flex-col gap-1">
-            {NAV_ITEMS.map((item) => {
+          <div className="flex flex-col gap-0.5">
+            {MAIN_NAV.map((item) => {
               const isActive = pathname.startsWith(item.href);
 
               return (
                 <SidebarItem
                   key={item.href}
                   variant="default"
-                  icon={<item.icon className="h-4 w-4" />}
+                  icon={<item.icon className="size-4" />}
                   label={item.label}
                   className={cn(
-                    "rounded-lg border border-transparent bg-transparent py-2 text-muted-foreground",
-                    isActive &&
-                      "border-primary/25 bg-primary/12 text-primary shadow-[var(--glow-primary-sm)]",
-                    !isActive &&
-                      "hover:border-border/70 hover:bg-background/80 hover:text-foreground",
+                    "rounded-md border border-transparent py-2 text-sm text-muted-foreground",
+                    isActive && "border-border/60 bg-background text-foreground",
+                    !isActive && "hover:bg-background/60 hover:text-foreground",
                   )}
-                  onClick={() => router.push(item.href)}
+                  onClick={() => handleNavigate(item.href)}
                 />
               );
             })}
           </div>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter className="border-t border-border/40 px-2 py-2">
+        <SidebarItem
+          variant="default"
+          icon={<FOOTER_NAV.icon className="size-4" />}
+          label={FOOTER_NAV.label}
+          className={cn(
+            "rounded-md border border-transparent py-2 text-sm text-muted-foreground",
+            pathname.startsWith(FOOTER_NAV.href) &&
+              "border-border/60 bg-background text-foreground",
+            !pathname.startsWith(FOOTER_NAV.href) && "hover:bg-background/60 hover:text-foreground",
+          )}
+          onClick={() => handleNavigate(FOOTER_NAV.href)}
+        />
+      </SidebarFooter>
     </Sidebar>
   );
 }

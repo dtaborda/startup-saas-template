@@ -62,14 +62,14 @@ export function SessionList({
       <Button
         variant="outline"
         onClick={onNewSession}
-        className="h-12 justify-start gap-3 rounded-2xl border-primary/16 bg-background/35 text-foreground hover:border-primary/34 hover:bg-primary/10"
+        className="h-12 justify-start gap-3 rounded-xl border-primary/16 bg-background text-foreground hover:border-primary/34 hover:bg-primary/10"
       >
         <Plus data-icon="inline-start" />
         <span className="font-medium">Open new workspace</span>
       </Button>
 
       <div className="flex items-center justify-between px-1">
-        <p className="font-mono text-[0.68rem] font-semibold tracking-[0.22em] text-muted-foreground uppercase">
+        <p className="font-mono text-[0.68rem] font-semibold tracking-[0.18em] text-muted-foreground uppercase">
           Recent sessions
         </p>
         <span className="font-mono text-xs text-muted-foreground">{sessions.length}</span>
@@ -85,18 +85,16 @@ export function SessionList({
               <div
                 key={session.id}
                 className={cn(
-                  "group relative overflow-hidden rounded-[1.35rem] border px-3 py-3 transition-all duration-200",
+                  "group relative overflow-hidden rounded-xl border px-3 py-3 transition-all duration-200",
                   isActive
-                    ? "border-primary/30 bg-primary/10 shadow-[0_0_1.25rem_oklch(0.88_0.156_204.5_/_0.12)]"
-                    : "border-white/6 bg-background/28 hover:border-white/12 hover:bg-background/42",
+                    ? "border-primary/30 bg-primary/10"
+                    : "border-border/40 bg-background hover:border-border/70",
                 )}
               >
                 <div
                   className={cn(
                     "pointer-events-none absolute inset-y-3 left-0 w-px rounded-full",
-                    isActive
-                      ? "bg-primary shadow-[0_0_1rem_oklch(0.88_0.156_204.5_/_0.45)]"
-                      : "bg-transparent",
+                    isActive ? "bg-primary" : "bg-transparent",
                   )}
                 />
 
@@ -108,10 +106,10 @@ export function SessionList({
                   >
                     <div
                       className={cn(
-                        "mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-2xl border",
+                        "mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-xl border",
                         isActive
                           ? "border-primary/26 bg-primary/12 text-primary"
-                          : "border-white/8 bg-background/46 text-muted-foreground",
+                          : "border-border/60 bg-background text-muted-foreground",
                       )}
                     >
                       <MessageSquare className="size-4" />
@@ -123,7 +121,7 @@ export function SessionList({
                           {session.title}
                         </p>
                         {isActive ? (
-                          <span className="rounded-full border border-primary/18 bg-primary/10 px-2 py-0.5 font-mono text-[0.62rem] font-semibold tracking-[0.2em] text-primary uppercase">
+                          <span className="rounded-full border border-primary/18 bg-primary/10 px-2 py-0.5 font-mono text-[0.62rem] font-semibold tracking-[0.18em] text-primary uppercase">
                             Live
                           </span>
                         ) : null}
@@ -156,7 +154,7 @@ export function SessionList({
                 </div>
 
                 {isConfirming ? (
-                  <p className="mt-3 font-mono text-[0.68rem] tracking-[0.2em] text-destructive uppercase">
+                  <p className="mt-3 font-mono text-[0.68rem] tracking-[0.18em] text-destructive uppercase">
                     Tap delete again to confirm
                   </p>
                 ) : null}
@@ -176,8 +174,8 @@ export function SessionList({
           )}
 
           {sessions.length === 0 ? (
-            <div className="glass flex flex-col gap-3 rounded-[1.5rem] border border-dashed border-white/10 px-4 py-6 text-center">
-              <p className="font-mono text-[0.68rem] font-semibold tracking-[0.22em] text-muted-foreground uppercase">
+            <div className="flex flex-col gap-3 rounded-xl border border-dashed border-border/60 bg-background px-4 py-6 text-center">
+              <p className="font-mono text-[0.68rem] font-semibold tracking-[0.18em] text-muted-foreground uppercase">
                 Empty rail
               </p>
               <p className="text-sm text-foreground">No conversations yet.</p>

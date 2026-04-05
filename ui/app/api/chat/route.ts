@@ -1,12 +1,39 @@
+import { ChatSendRequestSchema } from "@template/contracts";
+import { MOCK_TOKEN } from "@template/core";
+
+function parseCookie(cookieHeader: string, name: string): string | undefined {
+  const match = cookieHeader.match(new RegExp(`(?:^|;\\s*)${name}=([^;]*)`));
+  const value = match?.[1];
+  return value !== undefined ? decodeURIComponent(value) : undefined;
+}
+
 /**
  * Mock SSE chat endpoint.
  * Simulates AI responses with word-by-word streaming and RAG sources.
  */
 export async function POST(request: Request) {
-  const { message } = (await request.json()) as {
-    sessionId: string;
-    message: string;
-  };
+  // Defense-in-depth: verify auth independently of middleware
+  const cookieHeader = request.headers.get("cookie") ?? "";
+  const authToken = parseCookie(cookieHeader, "auth-token");
+
+  if (!authToken || authToken !== MOCK_TOKEN) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const body = await request.json();
+  const parsed = ChatSendRequestSchema.safeParse(body);
+
+  if (!parsed.success) {
+    return new Response(JSON.stringify({ error: parsed.error.flatten() }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const { message } = parsed.data;
 
   const encoder = new TextEncoder();
 
@@ -21,7 +48,7 @@ export async function POST(request: Request) {
 
       // Stream word by word with realistic delay
       for (const word of words) {
-        const event = `data: ${JSON.stringify({ type: "text-delta", text: `${word} ` })}\n\n`;
+        const event = `data: ${JSON.stringify({ type: "text-delta", delta: `${word} ` })}\n\n`;
         controller.enqueue(encoder.encode(event));
         await new Promise((r) => setTimeout(r, 30 + Math.random() * 50));
       }

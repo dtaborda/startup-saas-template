@@ -4,11 +4,11 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { forwardRef } from "react";
 import { cn } from "../lib/utils";
 
-const cardVariants = cva("rounded-xl border text-card-foreground shadow", {
+const cardVariants = cva("rounded-lg border border-border/60 text-card-foreground", {
   variants: {
     variant: {
       default: "bg-card",
-      glass: "glass",
+      glass: "bg-card",
     },
   },
   defaultVariants: {

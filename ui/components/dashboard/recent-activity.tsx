@@ -35,29 +35,13 @@ const STATUS_META = {
 
 export function RecentActivity() {
   return (
-    <Card variant="glass" className="overflow-hidden rounded-[1.75rem] border-border/70 p-0">
-      <CardHeader className="flex flex-col gap-4 border-b border-border/50 px-5 py-5 sm:px-6">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-2">
-            <span className="editorial-eyebrow">recent operator activity</span>
-            <CardTitle className="text-xl font-semibold tracking-[-0.04em] text-foreground">
-              Live actions stay scannable across the command deck
-            </CardTitle>
-          </div>
-
-          <div className="rounded-full border border-border/60 bg-background/65 px-3 py-1 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-muted-foreground">
-            {RECENT_ACTIVITY.length} tracked events
-          </div>
-        </div>
-
-        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
-          User actions, payment events, and support activity remain tied to the same dashboard data,
-          now framed as an editorial signal feed.
-        </p>
+    <Card className="overflow-hidden p-0">
+      <CardHeader className="border-b border-border/50 px-5 py-4">
+        <CardTitle className="text-sm font-medium text-foreground">Recent activity</CardTitle>
       </CardHeader>
 
-      <CardContent className="px-5 py-5 sm:px-6 sm:py-6">
-        <div className="flex flex-col gap-3">
+      <CardContent className="p-0">
+        <div className="divide-y divide-border/40">
           {RECENT_ACTIVITY.map((activity) => {
             const meta = STATUS_META[activity.status];
             const StatusIcon = meta.icon;
@@ -65,38 +49,26 @@ export function RecentActivity() {
             return (
               <div
                 key={`${activity.user}-${activity.date}`}
-                className="grid gap-4 rounded-[1.35rem] border border-border/60 bg-background/45 p-4 transition-colors hover:border-primary/20 hover:bg-background/60 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)_auto_auto] md:items-center"
+                className="flex items-center justify-between gap-4 px-5 py-3"
               >
-                <div className="flex min-w-0 flex-col gap-1">
-                  <span className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-muted-foreground">
-                    user
-                  </span>
-                  <p className="truncate text-sm font-semibold text-foreground">{activity.user}</p>
+                <div className="flex min-w-0 flex-1 items-center gap-4">
+                  <p className="min-w-0 truncate text-sm font-medium text-foreground">
+                    {activity.user}
+                  </p>
+                  <p className="hidden min-w-0 flex-1 truncate text-sm text-muted-foreground md:block">
+                    {activity.action}
+                  </p>
                 </div>
 
-                <div className="flex min-w-0 flex-col gap-1">
-                  <span className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-muted-foreground">
-                    action
+                <div className="flex shrink-0 items-center gap-3">
+                  <span className="hidden text-xs text-muted-foreground sm:block">
+                    {activity.date}
                   </span>
-                  <p className="text-sm leading-6 text-muted-foreground">{activity.action}</p>
-                </div>
-
-                <div className="flex flex-col gap-1 md:items-end">
-                  <span className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-muted-foreground">
-                    timestamp
-                  </span>
-                  <p className="text-sm text-foreground">{activity.date}</p>
-                </div>
-
-                <div className="flex md:justify-end">
                   <Badge
                     variant={meta.variant}
-                    className={cn(
-                      "gap-1.5 rounded-full border px-3 py-1 font-mono text-[0.62rem] uppercase tracking-[0.2em]",
-                      meta.tone,
-                    )}
+                    className={cn("gap-1 rounded-full border px-2 py-0.5 text-xs", meta.tone)}
                   >
-                    <StatusIcon className="size-3.5" />
+                    <StatusIcon className="size-3" />
                     {meta.label}
                   </Badge>
                 </div>

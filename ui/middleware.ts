@@ -1,3 +1,4 @@
+import { MOCK_TOKEN } from "@template/core";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -11,10 +12,23 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // For mock auth, we check a cookie (set by login form)
+  // Validate auth-token cookie: must exist AND have a non-empty value
   const authToken = request.cookies.get("auth-token");
 
-  if (!authToken) {
+  if (!authToken || !authToken.value.trim()) {
+    // For API routes, return 401 instead of redirecting
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // Validate token cryptographic integrity
+  const tokenValue = authToken.value.trim();
+  if (tokenValue !== MOCK_TOKEN) {
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
@@ -22,5 +36,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|api).*)"],
+  // Removed "api" from exclusion list so /api/* routes are now protected
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

@@ -51,7 +51,7 @@ export function useChatStream() {
           try {
             const event = JSON.parse(data);
             if (event.type === "text-delta") {
-              useChatStore.getState().appendStreamingContent(event.text);
+              useChatStore.getState().appendStreamingContent(event.delta);
             } else if (event.type === "sources") {
               useChatStore.getState().setSources(event.sources);
             }
@@ -76,7 +76,12 @@ export function useChatStream() {
     abortControllerRef.current?.abort();
     abortControllerRef.current = null;
     const store = useChatStore.getState();
-    store.finalizeStreaming(store.activeSessionId ?? "");
+    // Guard: only finalize if there is an active session to avoid orphan messages under key ""
+    if (store.activeSessionId) {
+      store.finalizeStreaming(store.activeSessionId);
+    } else {
+      store.setStatus("idle");
+    }
   }, []);
 
   return { sendMessage, stopStreaming };
