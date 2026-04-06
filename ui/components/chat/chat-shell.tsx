@@ -2,8 +2,8 @@
 
 import { selectUser, useAuthStore } from "@template/core";
 import { Badge, Button, cn } from "@template/ui";
-import { Menu, PanelLeftClose, Plus, X } from "lucide-react";
-import { useState } from "react";
+import { Maximize2, Menu, Minimize2, PanelLeftClose, Plus, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { Logo } from "@/components/shared/logo";
 import { useChatStream } from "@/hooks/use-chat-stream";
@@ -19,6 +19,7 @@ import { SessionList } from "./session-list";
 
 export function ChatShell() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const user = useAuthStore(selectUser);
 
   const {
@@ -49,6 +50,17 @@ export function ChatShell() {
 
   const { sendMessage, stopStreaming } = useChatStream();
 
+  useEffect(() => {
+    if (!isExpanded) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsExpanded(false);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isExpanded]);
+
   const activeSession = sessions.find((session) => session.id === activeSessionId) ?? null;
   const hasMessages = messages.length > 0;
 
@@ -76,7 +88,14 @@ export function ChatShell() {
   };
 
   return (
-    <div className="relative flex h-full overflow-hidden rounded-lg border border-border/60 bg-card">
+    <div
+      className={cn(
+        "transition-all duration-300",
+        isExpanded
+          ? "fixed inset-0 z-[60] flex h-screen w-screen overflow-hidden bg-card"
+          : "relative flex h-full overflow-hidden rounded-lg border border-border/60 bg-card",
+      )}
+    >
       {sidebarOpen ? (
         <button
           type="button"
@@ -143,9 +162,15 @@ export function ChatShell() {
             ) : null}
           </div>
 
-          <Button variant="outline" size="sm" onClick={handleNewSession} className="shrink-0">
-            <Plus className="size-4" />
-            New
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-8 shrink-0"
+            onClick={() => setIsExpanded(!isExpanded)}
+            aria-expanded={isExpanded}
+            aria-label={isExpanded ? "Exit full screen" : "Enter full screen"}
+          >
+            {isExpanded ? <Minimize2 className="size-4" /> : <Maximize2 className="size-4" />}
           </Button>
         </header>
 

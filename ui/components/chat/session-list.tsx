@@ -65,7 +65,7 @@ export function SessionList({
         className="h-12 justify-start gap-3 rounded-xl border-primary/16 bg-background text-foreground hover:border-primary/34 hover:bg-primary/10"
       >
         <Plus data-icon="inline-start" />
-        <span className="font-medium">Open new workspace</span>
+        <span className="font-medium">Nueva conversaci&#xF3;n</span>
       </Button>
 
       <div className="flex items-center justify-between px-1">
