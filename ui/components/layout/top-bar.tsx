@@ -2,8 +2,9 @@
 
 import { selectSidebarMobileOpen, useUiStore } from "@template/core";
 import { Button, cn } from "@template/ui";
-import { Bell, Menu, X } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { Bell, ChevronLeft, ChevronRight, Menu, X } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { NotificationList } from "../notifications";
 import { Breadcrumbs } from "./breadcrumbs";
 
@@ -13,9 +14,12 @@ export function TopBar() {
   const [hasUnread, setHasUnread] = useState(true);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
-  const closeNotifications = useCallback(() => {
-    setNotificationsOpen(false);
-  }, []);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Determine if we have route depth (more than 1 segment → show nav buttons)
+  const segments = pathname.split("/").filter(Boolean);
+  const hasDepth = segments.length > 1;
 
   // Close on Escape
   useEffect(() => {
@@ -30,9 +34,14 @@ export function TopBar() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [notificationsOpen]);
 
+  function closeNotifications() {
+    setNotificationsOpen(false);
+  }
+
   return (
     <>
       <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border/60 px-4 md:px-6">
+        {/* Mobile sidebar toggle */}
         <Button
           variant="ghost"
           size="icon"
@@ -43,10 +52,37 @@ export function TopBar() {
           <Menu className="size-4" />
         </Button>
 
+        {/* Back / Forward nav — only shown when route has depth */}
+        {hasDepth && (
+          <div className="flex items-center gap-1 shrink-0">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8"
+              onClick={() => router.back()}
+              aria-label="Go back"
+            >
+              <ChevronLeft className="size-4" />
+            </Button>
+            {/* Forward button hidden on mobile — back-only UX */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 hidden md:inline-flex"
+              onClick={() => router.forward()}
+              aria-label="Go forward"
+            >
+              <ChevronRight className="size-4" />
+            </Button>
+          </div>
+        )}
+
+        {/* Breadcrumbs — takes available space */}
         <div className="min-w-0 flex-1">
           <Breadcrumbs />
         </div>
 
+        {/* Notifications trigger */}
         <Button
           variant="ghost"
           size="icon"

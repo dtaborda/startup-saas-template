@@ -42,6 +42,19 @@ export const CourseSchema = z.object({
   rating: z.number().min(0).max(5).optional(),
   enrolledCount: z.number().int().min(0),
   tags: z.array(z.string()),
+  images: z.array(z.string().url()).default([]).describe("Gallery images for carousel"),
+  longDescription: z.string().optional().describe("Detailed course description with markdown"),
+  prerequisites: z.array(z.string()).default([]).describe("Required knowledge before starting"),
+  syllabus: z
+    .array(
+      z.object({
+        title: z.string(),
+        duration: z.number().int().min(0).describe("Section duration in minutes"),
+        lessons: z.array(z.string()),
+      }),
+    )
+    .default([])
+    .describe("Course curriculum breakdown"),
   ...TimestampsSchema.shape,
 });
 

@@ -14,6 +14,14 @@ export {
   CardTitle,
   cardVariants,
 } from "./components/card";
+export type { CarouselApi } from "./components/carousel";
+export {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./components/carousel";
 export type { ChartConfig } from "./components/chart";
 export {
   ChartContainer,
