@@ -42,7 +42,7 @@ flowchart TB
     U2[Corporate Admin or Venue Manager]
     U3[Door Staff]
 
-    subgraph UI[ui/ - Next.js App Router]
+    subgraph UI["Next.js Application"]
         MKT["(marketing)\nProduct Landing"]
         AUTH["(auth)\nLogin Register Invite"]
         PUB["(public)\nEvent Landing Checkout Ticket"]
@@ -51,14 +51,14 @@ flowchart TB
         API["/api/*\nWebhooks and Operational Endpoints"]
     end
 
-    subgraph PACKAGES[Workspace Packages]
-        CONTRACTS[@template/contracts\nSchemas and DTOs]
-        CORE[@template/core\nAuth Permissions Payments Email QR CSV]
-        DB[@template/db\nDrizzle Schema]
-        UILIB[@template/ui\nShared UI Primitives]
+    subgraph PACKAGES["Workspace Packages"]
+        CONTRACTS["Contracts Package\nSchemas and DTOs"]
+        CORE["Core Package\nAuth Permissions Payments Email QR CSV"]
+        DB["Database Package\nDrizzle Schema"]
+        UILIB["UI Package\nShared UI Primitives"]
     end
 
-    subgraph EXTERNAL[External Services]
+    subgraph EXTERNAL["External Services"]
         SUPABASE[Supabase\nAuth DB Storage RLS]
         MP[Mercado Pago]
         EMAIL[Resend or SMTP]
@@ -243,9 +243,9 @@ erDiagram
 ```mermaid
 sequenceDiagram
     participant Admin as Admin or Manager
-    participant UI as ui/(backoffice)
-    participant Contracts as @template/contracts
-    participant Core as @template/core
+    participant UI as Backoffice UI
+    participant Contracts as Contracts Package
+    participant Core as Core Package
     participant Supabase as Supabase
 
     Admin->>UI: Submit event form
@@ -262,10 +262,10 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant Buyer as Final Customer
-    participant PublicUI as ui/(public)
-    participant Core as @template/core
+    participant PublicUI as Public Checkout UI
+    participant Core as Core Package
     participant MP as Mercado Pago
-    participant API as /api/webhooks/mercadopago
+    participant API as Payment Webhook API
     participant DB as Supabase Postgres
     participant Mail as Email Provider
 
@@ -285,9 +285,9 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant Staff as Door Staff
-    participant CheckinUI as /check-in/[eventId]
-    participant API as /api/check-in/scan
-    participant Core as @template/core
+    participant CheckinUI as Check-in UI
+    participant API as Scan API
+    participant Core as Core Package
     participant DB as Supabase Postgres
 
     Staff->>CheckinUI: Scan QR code
@@ -596,19 +596,19 @@ Rule of thumb:
 
 ```mermaid
 flowchart TD
-    A[ui/app] --> A1[Pages and Layouts]
+    A["App Router Pages"] --> A1[Pages and Layouts]
     A --> A2[Route Handlers]
     A --> A3[Middleware Entry]
 
-    B[ui/components] --> B1[Business Components]
-    C[ui/modules] --> C1[Actions]
+    B["Business Components"] --> B1[Feature UI]
+    C["Feature Modules"] --> C1[Actions]
     C --> C2[Queries]
     C --> C3[Mappers and Serializers]
 
-    D[packages/contracts] --> D1[Request and Response Schemas]
-    E[packages/core] --> E1[Auth Permissions Payments Email QR CSV]
-    F[packages/db] --> F1[Drizzle Schema]
-    G[packages/ui] --> G1[UI Primitives]
+    D["Contracts Package"] --> D1[Request and Response Schemas]
+    E["Core Package"] --> E1[Auth Permissions Payments Email QR CSV]
+    F["Database Package"] --> F1[Drizzle Schema]
+    G["UI Package"] --> G1[UI Primitives]
 
     A1 --> C
     A2 --> C
