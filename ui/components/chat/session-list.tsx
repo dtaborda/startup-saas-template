@@ -65,7 +65,7 @@ export function SessionList({
         className="h-12 justify-start gap-3 rounded-xl border-primary/16 bg-background text-foreground hover:border-primary/34 hover:bg-primary/10"
       >
         <Plus data-icon="inline-start" />
-        <span className="font-medium">Nueva conversaci&#xF3;n</span>
+        <span className="font-medium">New conversation</span>
       </Button>
 
       <div className="flex items-center justify-between px-1">
@@ -75,7 +75,7 @@ export function SessionList({
         <span className="font-mono text-xs text-muted-foreground">{sessions.length}</span>
       </div>
 
-      <ScrollArea className="max-h-[calc(100vh-16rem)]">
+      <ScrollArea className="min-h-0 flex-1">
         <div className="flex flex-col gap-2 pr-1">
           {visibleSessions.map((session) => {
             const isActive = session.id === activeSessionId;
@@ -103,6 +103,7 @@ export function SessionList({
                     type="button"
                     onClick={() => onSessionSelect(session.id)}
                     className="flex min-w-0 flex-1 items-start gap-3 text-left"
+                    aria-label={`Select session: ${session.title}`}
                   >
                     <div
                       className={cn(

@@ -2,8 +2,8 @@
 
 import { selectUser, useAuthStore } from "@template/core";
 import { Badge, Button, cn } from "@template/ui";
-import { Maximize2, Menu, Minimize2, PanelLeftClose, Plus, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Maximize2, Menu, Minimize2, PanelLeftClose, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { Logo } from "@/components/shared/logo";
 import { useChatStream } from "@/hooks/use-chat-stream";
@@ -20,6 +20,9 @@ import { SessionList } from "./session-list";
 export function ChatShell() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const expandButtonRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const wasExpandedRef = useRef(false);
   const user = useAuthStore(selectUser);
 
   const {
@@ -54,11 +57,33 @@ export function ChatShell() {
     if (!isExpanded) return;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        event.stopPropagation();
         setIsExpanded(false);
       }
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isExpanded]);
+
+  // Lock body scroll when fullscreen to prevent scrolling behind the overlay
+  useEffect(() => {
+    if (!isExpanded) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [isExpanded]);
+
+  // Focus management: move focus into container on expand, return to button on collapse
+  useEffect(() => {
+    if (isExpanded) {
+      containerRef.current?.focus();
+      wasExpandedRef.current = true;
+    } else if (wasExpandedRef.current) {
+      expandButtonRef.current?.focus();
+      wasExpandedRef.current = false;
+    }
   }, [isExpanded]);
 
   const activeSession = sessions.find((session) => session.id === activeSessionId) ?? null;
@@ -87,19 +112,30 @@ export function ChatShell() {
     await sendMessage(sessionId, content);
   };
 
+  // z-[60]: above app-shell sidebar (z-50) and its overlay (z-40)
   return (
     <div
+      ref={containerRef}
+      tabIndex={isExpanded ? -1 : undefined}
+      {...(isExpanded && {
+        role: "dialog",
+        "aria-modal": "true",
+        "aria-label": "Chat full screen",
+      })}
       className={cn(
         "transition-all duration-300",
         isExpanded
-          ? "fixed inset-0 z-[60] flex h-screen w-screen overflow-hidden bg-card"
+          ? "fixed inset-0 z-[60] flex h-dvh w-screen overflow-hidden bg-card"
           : "relative flex h-full overflow-hidden rounded-lg border border-border/60 bg-card",
       )}
     >
       {sidebarOpen ? (
         <button
           type="button"
-          className="fixed inset-0 z-40 cursor-default bg-background/88 lg:hidden"
+          className={cn(
+            "inset-0 z-40 cursor-default bg-background/88 lg:hidden",
+            isExpanded ? "absolute" : "fixed",
+          )}
           onClick={() => setSidebarOpen(false)}
           onKeyDown={(event) => event.key === "Escape" && setSidebarOpen(false)}
           aria-label="Close conversation rail"
@@ -108,7 +144,8 @@ export function ChatShell() {
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-[280px] shrink-0 flex-col border-r border-border/60 bg-card transition-transform duration-300 ease-out lg:relative lg:translate-x-0",
+          "inset-y-0 left-0 z-50 flex w-[280px] shrink-0 flex-col border-r border-border/60 bg-card transition-transform duration-300 ease-out lg:relative lg:translate-x-0",
+          isExpanded ? "absolute" : "fixed",
           sidebarOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -163,10 +200,14 @@ export function ChatShell() {
           </div>
 
           <Button
+            ref={expandButtonRef}
             variant="ghost"
             size="icon"
             className="size-8 shrink-0"
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={() => {
+              if (!isExpanded) setSidebarOpen(false);
+              setIsExpanded(!isExpanded);
+            }}
             aria-expanded={isExpanded}
             aria-label={isExpanded ? "Exit full screen" : "Enter full screen"}
           >
