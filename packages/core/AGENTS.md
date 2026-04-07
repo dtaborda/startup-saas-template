@@ -50,6 +50,10 @@ Supabase client creation is encapsulated in `src/supabase/`:
 - ✅ Define typed selectors alongside the store.
 - ❌ NEVER subscribe to the entire store object.
 
+### Store Placement Decision
+- **Auth & infrastructure stores** (auth-store, ui-store) → `packages/core/src/stores/`
+- **Feature-specific UI stores** (chat-store) → `ui/stores/`
+
 ---
 
 ## PACKAGE STRUCTURE
@@ -91,8 +95,6 @@ export { createServerClient } from "./supabase/server"
 // From @template/core/stores/*
 export { useAuthStore } from "./stores/auth-store"
 
-// From @template/core/utils/*
-export { cn } from "./utils/cn"
 ```
 
 ---

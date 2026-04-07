@@ -140,4 +140,4 @@ grep -r "@template/contracts" --include="*.ts" --include="*.tsx" ui/ packages/
 
 - **Contract Definitions**: See `shared-contracts` skill
 - **SemVer Spec**: [semver.org](https://semver.org/)
-- **Changelog**: [packages/contracts/CHANGELOG.md](../../packages/contracts/CHANGELOG.md)
+- **Changelog**: [packages/contracts/CHANGELOG.md](../../packages/contracts/CHANGELOG.md) — Create this file on the first version bump if it doesn't exist.

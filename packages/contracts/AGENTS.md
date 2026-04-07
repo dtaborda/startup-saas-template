@@ -63,7 +63,8 @@ Each domain gets its own file with a matching export path:
   "./auth": "./src/auth.ts",     // Auth schemas
   "./chat": "./src/chat.ts",     // Chat/AI schemas
   "./common": "./src/common.ts", // Shared primitives
-  "./courses": "./src/courses.ts" // Course/content schemas
+  "./courses": "./src/courses.ts", // Course/content schemas
+  "./notifications": "./src/notifications/" // Notification schemas
 }
 ```
 
@@ -72,7 +73,7 @@ Each domain gets its own file with a matching export path:
 - ✅ Each file exports both schemas AND inferred types.
 - ✅ Re-export everything from `index.ts`.
 - ✅ Group related schemas in the same file.
-- ❌ NEVER create deeply nested directories — keep it flat.
+- ❌ Prefer flat files per domain (e.g., `src/auth.ts`). Subdirectories are acceptable for complex domains with multiple schema files (e.g., `src/notifications/`).
 
 ---
 
@@ -87,7 +88,8 @@ packages/contracts/
     ├── auth.ts           # Auth schemas (login, signup, user)
     ├── chat.ts           # Chat schemas (messages, sessions)
     ├── common.ts         # Shared schemas (pagination, errors)
-    └── courses.ts        # Course/content schemas
+    ├── courses.ts        # Course/content schemas
+    └── notifications/    # Notification schemas
 ```
 
 ---

@@ -8,22 +8,14 @@ metadata:
   description: "shadcn/ui component library — CLI, theming, composition patterns, registry access"
   scope: ui
   auto_invoke:
-    - action: "Installing shadcn/ui components"
-      skill: "shadcn"
-    - action: "Running shadcn CLI commands (init, add, search, diff)"
-      skill: "shadcn"
-    - action: "Configuring shadcn theming or CSS variables"
-      skill: "shadcn"
-    - action: "Working with components.json configuration"
-      skill: "shadcn"
-    - action: "Using shadcn presets or switching design themes"
-      skill: "shadcn"
-    - action: "Composing forms with Field/FieldGroup components"
-      skill: "shadcn"
-    - action: "Browsing or searching shadcn component registry"
-      skill: "shadcn"
-    - action: "Adding components from shadcn or third-party registries"
-      skill: "shadcn"
+    - "Installing shadcn/ui components"
+    - "Running shadcn CLI commands (init, add, search, diff)"
+    - "Configuring shadcn theming or CSS variables"
+    - "Working with components.json configuration"
+    - "Using shadcn presets or switching design themes"
+    - "Composing forms with Field/FieldGroup components"
+    - "Browsing or searching shadcn component registry"
+    - "Adding components from shadcn or third-party registries"
 ---
 
 # shadcn/ui

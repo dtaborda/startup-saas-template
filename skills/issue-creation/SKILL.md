@@ -13,6 +13,8 @@ metadata:
     - "Filing or triaging GitHub issues"
 ---
 
+> **NOTE**: This skill references GitHub issue/PR templates (`.github/ISSUE_TEMPLATE/`, `.github/PULL_REQUEST_TEMPLATE.md`) and labels (`status:needs-review`, etc.) that may not exist in this project yet. Create these templates before using this workflow, or adapt the patterns to your project's conventions.
+
 ## When to Use
 
 Use this skill when:

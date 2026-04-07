@@ -12,6 +12,8 @@ metadata:
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 
+> **PREREQUISITE**: This skill requires `ai` and `@ai-sdk/react` packages. Install with: `pnpm add ai @ai-sdk/react @ai-sdk/openai`. These packages are NOT currently installed in this project.
+
 ## Breaking Changes from AI SDK 4
 
 ```typescript

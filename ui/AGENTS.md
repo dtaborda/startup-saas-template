@@ -51,7 +51,7 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Writing Playwright E2E tests | `playwright` |
 | Writing React components | `react-19` |
 | Writing TypeScript types/interfaces | `typescript` |
-| action: "Installing shadcn/ui components | `shadcn` |
+| Installing shadcn/ui components | `shadcn` |
 
 ---
 
@@ -102,7 +102,7 @@ Types (local)       → {feature}/types.ts
 Utils (shared)      → packages/core/src/utils/
 Hooks (shared)      → ui/hooks/
 Hooks (local)       → {feature}/hooks.ts
-Zustand stores      → ui/stores/
+Zustand stores      → ui/stores/ (feature-specific) or @template/core/stores/ (shared/infra)
 shadcn components   → packages/ui/src/components/
 ```
 
@@ -144,9 +144,14 @@ ui/
 │   │   └── profile/          # User profile/settings
 │   └── api/                  # Route handlers (webhooks, etc.)
 ├── components/               # Domain-specific components
+│   ├── auth/                 # Auth components (login, signup)
 │   ├── chat/                 # Chat UI components
 │   ├── dashboard/            # Dashboard widgets
-│   └── shell/                # App shell (sidebar, header)
+│   ├── layout/               # App shell, sidebar, header, navigation
+│   ├── notifications/        # Notification components
+│   ├── portfolio/            # Portfolio components
+│   ├── profile/              # Profile components
+│   └── shared/               # Shared cross-feature components
 ├── hooks/                    # Shared React hooks
 ├── stores/                   # Zustand stores
 └── middleware.ts              # Auth middleware

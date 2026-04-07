@@ -14,16 +14,9 @@ metadata:
     - "Reviewing JSON:API compliance"
 ---
 
-## Use With django-drf
+## Implementation Note
 
-This skill focuses on **spec compliance**. For **implementation patterns** (ViewSets, Serializers, Filters), use `django-drf` skill together with this one.
-
-| Skill | Focus |
-|-------|-------|
-| `jsonapi` | What the spec requires (MUST/MUST NOT rules) |
-| `django-drf` | How to implement it in DRF (code patterns) |
-
-**When creating/modifying endpoints, invoke BOTH skills.**
+In this project, implement JSON:API patterns in Next.js Route Handlers (`ui/app/api/`).
 
 ---
 
@@ -267,5 +260,4 @@ When using `?include=provider`:
 ## Spec Reference
 
 - **Full Specification**: https://jsonapi.org/format/
-- **Implementation**: Use `django-drf` skill for DRF-specific patterns
-- **Testing**: Use `prowler-test-api` skill for test patterns
+- **Implementation**: Use Next.js Route Handlers in `ui/app/api/`

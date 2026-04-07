@@ -64,6 +64,8 @@ allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 | **Portfolio** | `components/portfolio/` | Portfolio display, projects |
 | **Authentication** | `components/auth/` | Login, signup, auth guards |
 | **Layout** | `components/layout/` | Sidebar, header, navigation |
+| **Notifications** | `components/notifications/` | Notification components |
+| **Shared** | `components/shared/` | Shared cross-feature components |
 
 ---
 

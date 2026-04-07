@@ -18,6 +18,8 @@ metadata:
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 
+> **NOTE**: The test infrastructure described below (fixtures directory, vitest) is not yet set up in this project. Install vitest and create `packages/contracts/fixtures/` before using these patterns.
+
 ## Related Skills
 
 - `shared-contracts` - Contract definitions
