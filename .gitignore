@@ -34,7 +34,8 @@ npm-debug.log*
 pnpm-debug.log*
 
 # Drizzle
-drizzle/
+# Note: do NOT ignore skills/drizzle/ — that directory contains the AI skill.
+# This project stores schema migrations in packages/db/migrations/ and they should be committed.
 
 # Supabase local state
 supabase/.branches/

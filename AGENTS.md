@@ -122,6 +122,7 @@ Before executing a `git commit`, you MUST verify:
 > - [`zustand-5`](skills/zustand-5/SKILL.md) - State management
 > - [`typescript`](skills/typescript/SKILL.md) - Strict TypeScript patterns
 > - [`playwright`](skills/playwright/SKILL.md) - E2E testing
+> - [`drizzle`](skills/drizzle/SKILL.md) - Drizzle ORM, RLS policies, Supabase
 
 ### Auto-invoke Skills
 
@@ -151,6 +152,7 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 | Creating/modifying Server Actions or Route Handlers | `template-bff` |
 | Creating/modifying shared data contracts | `shared-contracts` |
 | Creating/modifying template UI components | `template-ui` |
+| Database schemas, RLS policies, migrations | `drizzle` |
 | Deprecating or removing contract fields | `contract-versioning` |
 | Designing visually distinctive UI or landing pages | `frontend-design` |
 | Detecting inline DTO or schema definitions | `contract-enforcement` |

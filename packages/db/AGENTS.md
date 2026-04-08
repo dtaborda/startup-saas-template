@@ -10,8 +10,10 @@ When performing these actions, ALWAYS invoke the corresponding skill FIRST:
 
 | Action | Skill |
 |--------|-------|
-| Creating or modifying database schemas | `typescript` |
+| Creating or modifying database schemas | `drizzle` |
 | Working with Drizzle ORM types | `typescript` |
+| Adding RLS policies or Supabase auth integration | `drizzle` |
+| Running or reviewing migrations | `drizzle` |
 
 ---
 
@@ -37,7 +39,7 @@ The correct workflow:
 # 2. Generate a migration
 pnpm db:generate
 
-# 3. Review the generated SQL in drizzle/ output
+# 3. Review the generated SQL in migrations/ output
 # 4. Apply via Supabase migrations (when Supabase is configured)
 ```
 
@@ -52,21 +54,24 @@ import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   email: text("email").notNull().unique(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
-// ✅ DO: Export inferred types
+// ✅ DO: Export inferred types (add when creating or modifying tables)
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 ```
 
+> **CURRENT STATE**: The existing `schema.ts` does not yet export inferred types.
+> Add `$inferSelect`/`$inferInsert` when creating new tables or modifying existing ones.
+
 **Rules**:
 - ✅ Use `uuid` for primary keys with `defaultRandom()`.
-- ✅ Include `createdAt` and `updatedAt` on every table.
+- ✅ Include `createdAt` and `updatedAt` on every table (append-only tables may omit `updatedAt`).
 - ✅ Use snake_case for column names (Postgres convention).
 - ✅ Use camelCase for TypeScript field names (Drizzle handles mapping).
-- ✅ Export `$inferSelect` and `$inferInsert` types for every table.
+- ✅ Export `$inferSelect` and `$inferInsert` types when creating or modifying tables.
 - ❌ NEVER use `serial` IDs — use UUIDs.
 
 ---
@@ -91,8 +96,8 @@ packages/db/
 // From @template/db
 export * from "./schema"
 
-// From @template/db/schema
-export { users, type User, type NewUser } from "./schema"
+// From @template/db/schema (types will be added incrementally)
+export { users, chatSessions, chatMessages, courses, courseEnrollments } from "./schema"
 ```
 
 ---
